@@ -1,4 +1,6 @@
 // Oppsett av web serveren
+using System.Security.Cryptography.X509Certificates;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 

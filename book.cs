@@ -14,7 +14,3 @@ class Book
         IsBorrowed = false;
     }
 }
-
-
-
-
