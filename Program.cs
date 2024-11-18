@@ -35,6 +35,37 @@ app.MapGet("/book", () =>
     return library.ListAvailableBooks();
 });
 
+var userManager = new UserManager();
+
+app.MapPost("/login", (string username, string password) =>
+{
+    var user = userManager.Authenticate(username, password);
+    if (user == null)
+    {
+        Console.WriteLine("Autentisering feilet.");
+        return Results.Unauthorized();
+    }
+
+    Console.WriteLine($"Bruker {user.Username} logget inn som {user.Role}.");
+    return Results.Ok(user);
+});
+
+app.MapPost("/admin/addbook", (string username, string password, Book book) =>
+{
+    var user = userManager.Authenticate(username, password);
+    if (user == null || user.Role != Role.Admin)
+    {
+        Console.WriteLine("Ingen tilgang. Kun administrator kan legge til bøker.");
+        return Results.Forbid();
+    }
+
+    library.AddNewBook(book);
+    Console.WriteLine($"Boken {book.Title} ble lagt til av {user.Username}.");
+    return Results.Ok();
+});
+
+
+
 // Metode:     POST
 // URI (sti):  /
 app.MapPost("/book/borrow", (BorrowRequest request) =>

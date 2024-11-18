@@ -20,6 +20,8 @@ class Library
         return availableBooks;
     }
 
+    public static Guid bookId = Guid.NewGuid();
+
     public Book? BorrowBook(string title)
     {
         // Finn tilgjengelige bøker
